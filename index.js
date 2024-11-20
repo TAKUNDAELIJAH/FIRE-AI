@@ -1,12 +1,28 @@
+import chalk from 'chalk'
+import express from 'express'
 import { fileURLToPath } from 'url'
 import { join, dirname } from 'path'
+import path from 'path'
 import { setupMaster, fork } from 'cluster'
 import { watchFile, unwatchFile } from 'fs'
 import { createInterface } from 'readline'
 
+const app = express()
+const port = process.env.PORT || 5000
+
 const rl = createInterface(process.stdin, process.stdout)
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const args = [join(__dirname, 'firemd.js'), ...process.argv.slice(2)]
+
+app.use(express.static(path.join(__dirname, 'Assets')));
+
+app.get('/', (req, res) => {
+  res.redirect('/fire.html');
+});
+
+app.listen(port, () => {
+  console.log(chalk.green(`Port ${port} is open`))
+})
 
 var isRunning = false
 function start(file) {
