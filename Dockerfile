@@ -17,6 +17,7 @@ RUN npm install pm2 -g
 RUN npm install --legacy-peer-deps
 
 COPY . .
+RUN npm start
 
 EXPOSE 5000
 
